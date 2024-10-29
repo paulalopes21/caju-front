@@ -9,6 +9,7 @@ import {
 
 interface AdmissionContextData {
   admissions: Admission[];
+  loading: boolean;
   fetchAdmissions: () => void;
 }
 
@@ -22,14 +23,20 @@ const AdmissionContext = createContext<AdmissionContextData | undefined>(
 
 export const AdmissionProvider = ({ children }: AdmissionProviderProps) => {
   const [admissions, setAdmissions] = useState<Admission[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const fetchAdmissions = async () => {
+    setLoading(true);
     try {
+      // await new Promise((resolve) => setTimeout(resolve, 2000));
+
       const response = await fetch("http://localhost:3000/registrations");
       const data = await response.json();
       setAdmissions(data);
     } catch (error) {
       console.error("Failed to fetch admissions:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -41,6 +48,7 @@ export const AdmissionProvider = ({ children }: AdmissionProviderProps) => {
     <AdmissionContext.Provider
       value={{
         admissions,
+        loading,
         fetchAdmissions,
       }}
     >
