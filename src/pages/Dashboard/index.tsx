@@ -1,12 +1,15 @@
+import { useAdmission } from "@/context/AdmissionContext";
+
 import Collumns from "./components/Columns";
-import * as S from "./styles";
 import { SearchBar } from "./components/Searchbar";
+import * as S from "./styles";
 
 const DashboardPage = () => {
+  const { admissions } = useAdmission();
   return (
     <S.Container>
       <SearchBar />
-      <Collumns registrations={[]} />
+      <Collumns registrations={admissions} />
     </S.Container>
   );
 };
