@@ -43,6 +43,7 @@ export const SearchBar = () => {
         placeholder="Digite um CPF válido"
         value={cpf}
         onChange={handleCPFChange}
+        maxLength={14}
       />
       <S.Actions>
         <IconButton aria-label="refetch" onClick={handleRefetch}>

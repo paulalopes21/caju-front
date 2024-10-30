@@ -10,6 +10,7 @@ import {
 interface AdmissionContextData {
   admissions: Admission[];
   loading: boolean;
+  noResults: boolean;
   fetchAdmissions: (filter?: string) => void;
 }
 
@@ -24,9 +25,11 @@ const AdmissionContext = createContext<AdmissionContextData | undefined>(
 export const AdmissionProvider = ({ children }: AdmissionProviderProps) => {
   const [admissions, setAdmissions] = useState<Admission[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [noResults, setNoResults] = useState(false);
 
   const fetchAdmissions = async (filter: string = "") => {
     setLoading(true);
+    setNoResults(false);
     try {
       // await new Promise((resolve) => setTimeout(resolve, 2000));
 
@@ -35,6 +38,7 @@ export const AdmissionProvider = ({ children }: AdmissionProviderProps) => {
       );
       const data = await response.json();
       setAdmissions(data);
+      setNoResults(data.length === 0);
     } catch (error) {
       console.error("Failed to fetch admissions:", error);
     } finally {
@@ -51,6 +55,7 @@ export const AdmissionProvider = ({ children }: AdmissionProviderProps) => {
       value={{
         admissions,
         loading,
+        noResults,
         fetchAdmissions,
       }}
     >

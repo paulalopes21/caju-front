@@ -43,3 +43,8 @@ export const CollumContent = styled.div`
   overflow: auto;
   max-height: 85%;
 `;
+
+export const NoResult = styled.p`
+  margin: 0px;
+  margin: 24px;
+`;

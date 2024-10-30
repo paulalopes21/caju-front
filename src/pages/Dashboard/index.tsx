@@ -6,11 +6,15 @@ import { SearchBar } from "./components/Searchbar";
 import * as S from "./styles";
 
 const DashboardPage = () => {
-  const { admissions, loading } = useAdmission();
+  const { admissions, loading, noResults } = useAdmission();
   return (
     <S.Container>
       <SearchBar />
-      {loading ? <LoadingSpinner /> : <Collumns registrations={admissions} />}
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <Collumns registrations={admissions} noResults={noResults} />
+      )}
     </S.Container>
   );
 };
