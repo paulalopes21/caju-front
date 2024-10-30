@@ -14,6 +14,7 @@ interface AdmissionContextData {
   noResults: boolean;
   fetchAdmissions: (filter?: string) => void;
   updateAdmission: (id: number, status: AdmissionStatus) => Promise<void>;
+  deleteAdmission: (id: number) => Promise<void>;
 }
 
 interface AdmissionProviderProps {
@@ -49,6 +50,8 @@ export const AdmissionProvider = ({ children }: AdmissionProviderProps) => {
   };
 
   const updateAdmission = async (id: number, status: AdmissionStatus) => {
+    setLoading(true);
+
     try {
       await fetch(`http://localhost:3000/registrations/${id}`, {
         method: "PATCH",
@@ -58,6 +61,22 @@ export const AdmissionProvider = ({ children }: AdmissionProviderProps) => {
       fetchAdmissions();
     } catch (error) {
       console.error("Failed to update admission:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteAdmission = async (id: number) => {
+    setLoading(true);
+    try {
+      await fetch(`http://localhost:3000/registrations/${id}`, {
+        method: "DELETE",
+      });
+      fetchAdmissions();
+    } catch (error) {
+      console.error("Failed to delete admission:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -73,6 +92,7 @@ export const AdmissionProvider = ({ children }: AdmissionProviderProps) => {
         noResults,
         fetchAdmissions,
         updateAdmission,
+        deleteAdmission,
       }}
     >
       {children}

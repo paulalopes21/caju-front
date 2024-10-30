@@ -12,13 +12,14 @@ const allColumns = [
 type Props = {
   registrations: Admission[];
   onUpdateStatus: (id: number, status: AdmissionStatus) => void;
-
+  onDelete: (id: number) => void;
   noResults: boolean;
 };
 
 const Collumns: React.FC<Props> = ({
   registrations,
   onUpdateStatus,
+  onDelete,
   noResults,
 }) => {
   return (
@@ -37,6 +38,7 @@ const Collumns: React.FC<Props> = ({
                     data={registration}
                     key={registration.id}
                     onUpdateStatus={onUpdateStatus}
+                    onDelete={onDelete}
                   />
                 ))
             )}

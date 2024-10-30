@@ -6,7 +6,8 @@ import { SearchBar } from "./components/Searchbar";
 import * as S from "./styles";
 
 const DashboardPage = () => {
-  const { admissions, updateAdmission, loading, noResults } = useAdmission();
+  const { admissions, updateAdmission, deleteAdmission, loading, noResults } =
+    useAdmission();
   return (
     <S.Container>
       <SearchBar />
@@ -16,6 +17,7 @@ const DashboardPage = () => {
         <Collumns
           registrations={admissions}
           onUpdateStatus={updateAdmission}
+          onDelete={deleteAdmission}
           noResults={noResults}
         />
       )}

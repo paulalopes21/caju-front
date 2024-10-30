@@ -13,6 +13,7 @@ import * as S from "./styles";
 type Props = {
   data: Admission;
   onUpdateStatus: (id: number, status: AdmissionStatus) => void;
+  onDelete: (id: number) => void;
 };
 
 const renderActionButtons = (
@@ -53,7 +54,11 @@ const renderActionButtons = (
   }
 };
 
-const RegistrationCard: React.FC<Props> = ({ data, onUpdateStatus }) => {
+const RegistrationCard: React.FC<Props> = ({
+  data,
+  onUpdateStatus,
+  onDelete,
+}) => {
   return (
     <S.Card>
       <S.IconAndText>
@@ -70,7 +75,7 @@ const RegistrationCard: React.FC<Props> = ({ data, onUpdateStatus }) => {
       </S.IconAndText>
       <S.Actions>
         {renderActionButtons(data.status, data.id, onUpdateStatus)}
-        <HiOutlineTrash />
+        <HiOutlineTrash onClick={() => onDelete(data.id)} />
       </S.Actions>
     </S.Card>
   );
