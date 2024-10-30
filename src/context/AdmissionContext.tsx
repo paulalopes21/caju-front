@@ -1,4 +1,4 @@
-import { AdmissionStatus } from "@/constants/AdmissionStatus";
+import { ADMISSION_STATUS, AdmissionStatus } from "@/constants/AdmissionStatus";
 
 import { Admission } from "@/types/Admission";
 import {
@@ -14,6 +14,7 @@ interface AdmissionContextData {
   loading: boolean;
   noResults: boolean;
   fetchAdmissions: (filter?: string) => void;
+  addAdmission: (data: Omit<Admission, "id" | "status">) => Promise<void>;
   updateAdmission: (id: number, status: AdmissionStatus) => Promise<void>;
   deleteAdmission: (id: number) => Promise<void>;
 }
@@ -45,6 +46,31 @@ export const AdmissionProvider = ({ children }: AdmissionProviderProps) => {
       setNoResults(data.length === 0);
     } catch (error) {
       console.error("Failed to fetch admissions:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const addAdmission = async (data: Omit<Admission, "id" | "status">) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`http://localhost:3000/registrations`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data, status: ADMISSION_STATUS.REVIEW }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao criar nova admissão");
+      }
+
+      const newAdmission = await response.json();
+      setAdmissions((prev) => [...prev, newAdmission]);
+    } catch (error) {
+      console.error("Erro ao adicionar admissão:", error);
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -110,6 +136,7 @@ export const AdmissionProvider = ({ children }: AdmissionProviderProps) => {
         loading,
         noResults,
         fetchAdmissions,
+        addAdmission,
         updateAdmission,
         deleteAdmission,
       }}

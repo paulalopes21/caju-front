@@ -26,3 +26,7 @@ export const isValidCPF = (cpf: string) => {
   if (checkDigit === 10 || checkDigit === 11) checkDigit = 0;
   return checkDigit === parseInt(cleanedCPF.charAt(10));
 };
+
+export const sanitizeCPF = (cpf: string): string => {
+  return cpf.replace(/[.-]/g, "");
+};

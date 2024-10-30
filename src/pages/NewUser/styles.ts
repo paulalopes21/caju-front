@@ -22,6 +22,12 @@ export const Card = styled.div`
     margin-bottom: 8px;
     align-items: flex-start;
   }
+`;
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 
   ${Button} {
     align-self: flex-end;
