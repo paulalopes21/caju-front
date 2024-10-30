@@ -1,3 +1,4 @@
+import { AdmissionStatus } from "@/constants/AdmissionStatus";
 import { Admission } from "@/types/Admission";
 import {
   createContext,
@@ -12,6 +13,7 @@ interface AdmissionContextData {
   loading: boolean;
   noResults: boolean;
   fetchAdmissions: (filter?: string) => void;
+  updateAdmission: (id: number, status: AdmissionStatus) => Promise<void>;
 }
 
 interface AdmissionProviderProps {
@@ -46,6 +48,19 @@ export const AdmissionProvider = ({ children }: AdmissionProviderProps) => {
     }
   };
 
+  const updateAdmission = async (id: number, status: AdmissionStatus) => {
+    try {
+      await fetch(`http://localhost:3000/registrations/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+      fetchAdmissions();
+    } catch (error) {
+      console.error("Failed to update admission:", error);
+    }
+  };
+
   useEffect(() => {
     fetchAdmissions();
   }, []);
@@ -57,6 +72,7 @@ export const AdmissionProvider = ({ children }: AdmissionProviderProps) => {
         loading,
         noResults,
         fetchAdmissions,
+        updateAdmission,
       }}
     >
       {children}

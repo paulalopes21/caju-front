@@ -1,3 +1,4 @@
+import { AdmissionStatus } from "@/constants/AdmissionStatus";
 import { Admission } from "@/types/Admission";
 import RegistrationCard from "../RegistrationCard";
 import * as S from "./styles";
@@ -10,10 +11,16 @@ const allColumns = [
 
 type Props = {
   registrations: Admission[];
+  onUpdateStatus: (id: number, status: AdmissionStatus) => void;
+
   noResults: boolean;
 };
 
-const Collumns: React.FC<Props> = ({ registrations, noResults }) => {
+const Collumns: React.FC<Props> = ({
+  registrations,
+  onUpdateStatus,
+  noResults,
+}) => {
   return (
     <S.Container>
       {allColumns.map((collum) => (
@@ -26,7 +33,11 @@ const Collumns: React.FC<Props> = ({ registrations, noResults }) => {
               registrations
                 .filter((registration) => registration.status === collum.status)
                 .map((registration) => (
-                  <RegistrationCard data={registration} key={registration.id} />
+                  <RegistrationCard
+                    data={registration}
+                    key={registration.id}
+                    onUpdateStatus={onUpdateStatus}
+                  />
                 ))
             )}
           </S.CollumContent>

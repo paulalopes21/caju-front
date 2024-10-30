@@ -12,26 +12,48 @@ import * as S from "./styles";
 
 type Props = {
   data: Admission;
+  onUpdateStatus: (id: number, status: AdmissionStatus) => void;
 };
 
-const renderActionButtons = (status: AdmissionStatus) => {
+const renderActionButtons = (
+  status: Admission["status"],
+  id: number,
+  onUpdateStatus: Props["onUpdateStatus"]
+) => {
   switch (status) {
     case ADMISSION_STATUS.REVIEW:
       return (
         <>
-          <ButtonSmall bgcolor="rgb(255, 145, 154)">Reprovar</ButtonSmall>
-          <ButtonSmall bgcolor="rgb(155, 229, 155)">Aprovar</ButtonSmall>
+          <ButtonSmall
+            bgcolor="rgb(255, 145, 154)"
+            onClick={() => onUpdateStatus(id, ADMISSION_STATUS.REPROVED)}
+          >
+            Reprovar
+          </ButtonSmall>
+          <ButtonSmall
+            bgcolor="rgb(155, 229, 155)"
+            onClick={() => onUpdateStatus(id, ADMISSION_STATUS.APPROVED)}
+          >
+            Aprovar
+          </ButtonSmall>
         </>
       );
     case ADMISSION_STATUS.REPROVED:
     case ADMISSION_STATUS.APPROVED:
-      return <ButtonSmall bgcolor="#ff8858">Revisar novamente</ButtonSmall>;
+      return (
+        <ButtonSmall
+          bgcolor="#ff8858"
+          onClick={() => onUpdateStatus(id, ADMISSION_STATUS.REVIEW)}
+        >
+          Revisar novamente
+        </ButtonSmall>
+      );
     default:
       return null;
   }
 };
 
-const RegistrationCard: React.FC<Props> = ({ data }) => {
+const RegistrationCard: React.FC<Props> = ({ data, onUpdateStatus }) => {
   return (
     <S.Card>
       <S.IconAndText>
@@ -47,7 +69,7 @@ const RegistrationCard: React.FC<Props> = ({ data }) => {
         <span>{data.admissionDate}</span>
       </S.IconAndText>
       <S.Actions>
-        {renderActionButtons(data.status)}
+        {renderActionButtons(data.status, data.id, onUpdateStatus)}
         <HiOutlineTrash />
       </S.Actions>
     </S.Card>
