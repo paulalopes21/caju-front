@@ -16,49 +16,49 @@ type Props = {
   onDelete: (id: number) => void;
 };
 
-const renderActionButtons = (
-  status: Admission["status"],
-  id: number,
-  onUpdateStatus: Props["onUpdateStatus"]
-) => {
-  switch (status) {
-    case ADMISSION_STATUS.REVIEW:
-      return (
-        <>
-          <ButtonSmall
-            bgcolor="rgb(255, 145, 154)"
-            onClick={() => onUpdateStatus(id, ADMISSION_STATUS.REPROVED)}
-          >
-            Reprovar
-          </ButtonSmall>
-          <ButtonSmall
-            bgcolor="rgb(155, 229, 155)"
-            onClick={() => onUpdateStatus(id, ADMISSION_STATUS.APPROVED)}
-          >
-            Aprovar
-          </ButtonSmall>
-        </>
-      );
-    case ADMISSION_STATUS.REPROVED:
-    case ADMISSION_STATUS.APPROVED:
-      return (
-        <ButtonSmall
-          bgcolor="#ff8858"
-          onClick={() => onUpdateStatus(id, ADMISSION_STATUS.REVIEW)}
-        >
-          Revisar novamente
-        </ButtonSmall>
-      );
-    default:
-      return null;
-  }
-};
-
 const RegistrationCard: React.FC<Props> = ({
   data,
   onUpdateStatus,
   onDelete,
 }) => {
+  const renderActionButtons = (
+    status: Admission["status"],
+    id: number,
+    onUpdateStatus: Props["onUpdateStatus"]
+  ) => {
+    switch (status) {
+      case ADMISSION_STATUS.REVIEW:
+        return (
+          <>
+            <ButtonSmall
+              bgcolor="rgb(255, 145, 154)"
+              onClick={() => onUpdateStatus(id, ADMISSION_STATUS.REPROVED)}
+            >
+              Reprovar
+            </ButtonSmall>
+            <ButtonSmall
+              bgcolor="rgb(155, 229, 155)"
+              onClick={() => onUpdateStatus(id, ADMISSION_STATUS.APPROVED)}
+            >
+              Aprovar
+            </ButtonSmall>
+          </>
+        );
+      case ADMISSION_STATUS.REPROVED:
+      case ADMISSION_STATUS.APPROVED:
+        return (
+          <ButtonSmall
+            bgcolor="#ff8858"
+            onClick={() => onUpdateStatus(id, ADMISSION_STATUS.REVIEW)}
+          >
+            Revisar novamente
+          </ButtonSmall>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <S.Card>
       <S.IconAndText>

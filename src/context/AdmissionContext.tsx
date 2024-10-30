@@ -1,4 +1,5 @@
 import { AdmissionStatus } from "@/constants/AdmissionStatus";
+
 import { Admission } from "@/types/Admission";
 import {
   createContext,
@@ -53,14 +54,23 @@ export const AdmissionProvider = ({ children }: AdmissionProviderProps) => {
     setLoading(true);
 
     try {
-      await fetch(`http://localhost:3000/registrations/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status }),
-      });
+      const response = await fetch(
+        `http://localhost:3000/registrations/${id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Falha ao atualizar o status da admissão");
+      }
+
       fetchAdmissions();
     } catch (error) {
       console.error("Failed to update admission:", error);
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -69,12 +79,21 @@ export const AdmissionProvider = ({ children }: AdmissionProviderProps) => {
   const deleteAdmission = async (id: number) => {
     setLoading(true);
     try {
-      await fetch(`http://localhost:3000/registrations/${id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `http://localhost:3000/registrations/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Falha ao deletar admissão");
+      }
+
       fetchAdmissions();
     } catch (error) {
       console.error("Failed to delete admission:", error);
+      throw error;
     } finally {
       setLoading(false);
     }
