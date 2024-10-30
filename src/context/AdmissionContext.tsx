@@ -10,7 +10,7 @@ import {
 interface AdmissionContextData {
   admissions: Admission[];
   loading: boolean;
-  fetchAdmissions: () => void;
+  fetchAdmissions: (filter?: string) => void;
 }
 
 interface AdmissionProviderProps {
@@ -25,12 +25,14 @@ export const AdmissionProvider = ({ children }: AdmissionProviderProps) => {
   const [admissions, setAdmissions] = useState<Admission[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const fetchAdmissions = async () => {
+  const fetchAdmissions = async (filter: string = "") => {
     setLoading(true);
     try {
       // await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      const response = await fetch("http://localhost:3000/registrations");
+      const response = await fetch(
+        `http://localhost:3000/registrations${filter}`
+      );
       const data = await response.json();
       setAdmissions(data);
     } catch (error) {
